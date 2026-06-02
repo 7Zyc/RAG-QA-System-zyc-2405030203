@@ -1,0 +1,49 @@
+Transformer 是 2017 年由 Vaswani 等人在论文《Attention is All You Need》中提出的
+新型神经网络架构。它完全基于注意力机制（Attention），抛弃了传统的 RNN 与 CNN 结构，
+成为 BERT、GPT、T5、Llama 等现代大模型的基石。
+
+一、整体结构
+Transformer 由编码器（Encoder）和解码器（Decoder）堆叠而成：
+- 编码器：N 个相同层，每层包含 Multi-Head Self-Attention 与 Feed Forward Network，
+  并使用残差连接与层归一化（LayerNorm）。
+- 解码器：同样 N 个相同层，在 Self-Attention 与 FFN 之间多了一个
+  Encoder-Decoder Cross-Attention。
+
+二、核心组件
+1. 自注意力（Self-Attention）
+   Q = X·Wq, K = X·Wk, V = X·Wv
+   Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V
+
+2. 多头注意力（Multi-Head Attention）
+   将 Q/K/V 投影到多个子空间并行计算注意力，最后拼接、线性变换。
+   优势：可以同时关注不同位置、不同表示子空间的信息。
+
+3. 位置编码（Positional Encoding）
+   Transformer 没有循环结构，需要显式注入位置信息。
+   原始论文使用 sin/cos 固定位置编码，后续出现可学习位置编码、相对位置编码（RoPE、ALiBi）等。
+
+4. 前馈网络（FFN）
+   两层全连接 + 激活函数（如 ReLU / GELU），逐位置独立。
+
+三、优势
+- 可并行：摆脱了 RNN 的顺序依赖，训练速度大幅提升。
+- 长距离依赖：Self-Attention 直接建模任意两个位置的关系。
+- 通用结构：编码器-解码器框架适用于翻译、摘要、问答等序列到序列任务。
+
+四、典型变体
+- Encoder-only：BERT、RoBERTa，适合理解类任务。
+- Decoder-only：GPT、LLaMA、Qwen，适合生成类任务。
+- Encoder-Decoder：T5、Bart，适合翻译、摘要。
+
+五、应用
+- 机器翻译：原始论文即针对翻译任务。
+- 文本分类、命名实体识别、问答系统、文本生成。
+- 跨模态：Vision Transformer（ViT）将图像切成 patch 输入 Transformer。
+
+六、训练与优化
+- 损失函数：交叉熵 + Label Smoothing。
+- 优化器：Adam / AdamW，学习率 warmup + 余弦衰减。
+- 正则化：Dropout、Weight Decay、梯度裁剪。
+- 分布式训练：数据并行、张量并行、流水线并行。
+
+Transformer 是当今大模型时代的"母架构"，理解其原理是深入 LLM 的必经之路。

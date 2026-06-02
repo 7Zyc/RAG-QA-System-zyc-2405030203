@@ -1,0 +1,54 @@
+注意力机制（Attention Mechanism）是深度学习中一种让模型"有选择地关注输入
+不同部分"的核心思想。它最早用于机器翻译，随后被广泛应用于 NLP、CV、语音、多模态等
+众多领域。
+
+一、思想来源
+人类在阅读、听讲时，注意力会自动集中在更相关的内容上。
+注意力机制模仿这一过程：给定查询（Query）和一组键值对（Key-Value），
+输出一个加权后的表示。
+
+二、通用公式
+给定查询 Q、键 K、值 V：
+Attention(Q, K, V) = softmax( score(Q, K) ) · V
+其中 score(Q, K) 常见形式有：
+- 加性注意力：score = v^T · tanh(W_q Q + W_k K)
+- 缩放点积：score = Q K^T / sqrt(d_k)（Transformer 使用）
+
+三、几种典型变体
+1. Self-Attention
+   Q、K、V 来自同一序列，捕获序列内部依赖。
+
+2. Cross-Attention
+   Q 来自一个序列（如解码器），K/V 来自另一个序列（如编码器），
+   用于 Seq2Seq 任务中的信息融合。
+
+3. Causal / Masked Self-Attention
+   解码器中需要屏蔽未来位置，确保自回归生成。
+
+4. Multi-Head Attention
+   多组投影并行计算注意力，最后拼接输出。
+
+四、相对位置编码与高效注意力
+- RoPE（Rotary Position Embedding）：用旋转矩阵编码相对位置，被 LLaMA、Qwen 等采用。
+- ALiBi：添加线性偏置，可外推到更长序列。
+- FlashAttention：通过分块与重计算降低显存、提升速度。
+- Linear Attention、Performers：将复杂度从 O(n^2) 降为 O(n)。
+
+五、注意力可视化
+注意力权重可以可视化输入词与输出词之间的关联，
+有助于模型解释性与错误分析。但研究表明：
+- 不同 head 学到的模式不同。
+- 注意力权重不完全等同于"重要性"，需谨慎解读。
+
+六、应用场景
+- 机器翻译、文本摘要、问答系统。
+- 图像描述、视觉问答、目标检测。
+- 语音识别、语音合成。
+- 推荐系统中的用户-物品交互建模。
+
+七、与 RAG 的关系
+RAG（Retrieval-Augmented Generation）系统中的检索器本质就是一种"硬注意力"：
+- 大模型（Query）只关注向量库（K/V）中最相关的若干文档。
+- Cross-Attention 进一步融合检索片段与生成上下文。
+
+注意力机制是理解现代大模型行为、设计高效长上下文方案的关键钥匙。

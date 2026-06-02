@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# 虚拟环境
+venv/
+.venv/
+env/
+ENV/
+
+# Streamlit
+.streamlit/secrets.toml
+.streamlit/config.toml
+*.streamlit/
+
+# 向量库与缓存
+data/chroma_db/
+data/cache/
+*.chroma/
+*.duckdb
+*.sqlite3
+
+# 打包产物
+build/
+dist/
+*.spec.bak
+*.pyc
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# 系统
+*.log
+*.tmp
+.env
+.env.local
+.env.*.local
+
+# 用户上传与临时文件
+uploads/
+tmp/
+temp/
